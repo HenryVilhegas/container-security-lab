@@ -1,0 +1,8 @@
+# Pod Security Admission no nível "restricted" (equivalente conceitual ao SCC restricted do OpenShift)
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: csl
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/enforce-version: latest

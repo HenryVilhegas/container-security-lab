@@ -1,0 +1,34 @@
+name: container-security-lab
+
+services:
+  insecure:
+    build:
+      context: .
+      dockerfile: insecure/Dockerfile
+    image: csl-insecure:1.0
+    ports:
+      - "8081:8080"            # exposto em 0.0.0.0 (todas as interfaces)
+    # sem limites, sem read_only, root, capabilities padrão
+
+  hardened:
+    build:
+      context: .
+      dockerfile: hardened/Dockerfile
+    image: csl-hardened:1.0
+    ports:
+      - "127.0.0.1:8090:8080"  # somente loopback do host
+    networks: [lab_net]
+    read_only: true            # filesystem raiz somente leitura
+    tmpfs:
+      - /tmp                   # único local gravável (em memória)
+    cap_drop: [ALL]            # remove todas as capabilities Linux
+    security_opt:
+      - no-new-privileges:true # bloqueia escalada via setuid
+    pids_limit: 100
+    mem_limit: 128m
+    cpus: 0.5
+    restart: unless-stopped
+
+networks:
+  lab_net:
+    driver: bridge             # rede dedicada, separada da rede padrão

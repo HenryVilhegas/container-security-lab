@@ -1,0 +1,6 @@
+.git
+docs
+k8s
+reports
+scripts
+**/__pycache__

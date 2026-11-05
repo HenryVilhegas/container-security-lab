@@ -1,0 +1,13 @@
+# Pod inseguro, usado só para provar que o Pod Security Admission o bloqueia.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: csl-insecure
+spec:
+  containers:
+    - name: app
+      image: csl-insecure:1.0
+      imagePullPolicy: IfNotPresent
+      securityContext:
+        privileged: true
+        runAsUser: 0
